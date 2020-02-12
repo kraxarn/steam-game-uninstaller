@@ -160,7 +160,7 @@ func main() {
 	// Search for game
 	game := Search(os.Args[1])
 	if game == nil {
-		fmt.Println("no results found for", os.Args[1])
+		fmt.Printf("no results found for \"%v\"\n", os.Args[1])
 		return
 	}
 	fmt.Printf("%v\n\t%v (%v)\nuninstall? [y/n]: ", game.FullPath(), game.Name, game.FormatSize())
