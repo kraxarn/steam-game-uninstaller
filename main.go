@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
-	"path/filepath"
 	"strconv"
 	"strings"
 )
@@ -129,23 +128,11 @@ func Search(keyword string) *SteamGame {
 
 func Uninstall(game *SteamGame) error {
 	// Start by deleting main folder
-	// We could just do os.RemoveAll, but we don't get any output :(
-	err := filepath.Walk(game.FullPath(), func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		fmt.Println(path)
-		if err = os.Remove(path); err != nil {
-			return err
-		}
-		return nil
-	})
-	if err != nil {
+	if err := os.RemoveAll(game.FullPath()); err != nil {
 		return err
 	}
 	// Final script to let Steam know it's installed
 	manifestPath := path.Join(libraries[game.Library], fmt.Sprintf("appmanifest_%v.acf", game.ID))
-	fmt.Println(manifestPath)
 	return os.Remove(manifestPath)
 }
 
